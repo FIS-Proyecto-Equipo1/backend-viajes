@@ -1,0 +1,22 @@
+{
+  "name": "viajes",
+  "version": "1.0.0",
+  "description": "microservicio viajes",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Javortper/microsevicio-viajes.git"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "José Enrique & Javier Ortiz",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "heroku": "^7.47.5",
+    "mongoose": "^5.11.8",
+    "nedb": "^1.8.0"
+  }
+}

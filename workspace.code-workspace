@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "microsevicio-viajes",
+			"path": "../home/node/microsevicio-viajes"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}
