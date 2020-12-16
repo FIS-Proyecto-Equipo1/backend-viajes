@@ -39,6 +39,19 @@ app.get(BASE_API_PATH + "/travels/:id", (req, res) => {
     });
 });
 
+// GET viaje por ID de cliente
+app.get(BASE_API_PATH + "/travels/cliente/:id", (req, res) => {
+    console.log(Date() + " - GET /travels");
+    Travel.find({id_cliente:req.params.id}, (err, travels) => {
+        if (err) {
+            console.log(Date() + "-" + err);
+            res.sendStatus(500);
+        } else {
+            res.send(travels)
+        }
+    });
+});
+
 // POST crear viaje
 app.post(BASE_API_PATH + "/travels", (req, res) => {
     console.log(Date() + " - POST /travels");

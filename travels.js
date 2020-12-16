@@ -14,6 +14,7 @@ const travelSchema = new mongoose.Schema({
 //             duracion:this.duracion};
 // }
 
+
 const Travel = mongoose.model('Travel', travelSchema);
 
 module.exports = Travel;
