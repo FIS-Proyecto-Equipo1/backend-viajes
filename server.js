@@ -26,6 +26,20 @@ app.post(BASE_API_PATH + "/travels", (req, res) => {
 });
 
 // GET con busqueda
+app.get(BASE_API_PATH + "/travels", (req, res) => {
+    console.log(Date() + " - GET /travels");
+    Travel.find({}, (err, travels) => {
+        if (err) {
+            console.log(Date() + "-" + err);
+            res.sendStatus(500);
+        } else{
+            console.log(req.query);
+            res.send(travels)
+        }
+    });
+});
+
+// GET con busqueda
 app.get(BASE_API_PATH + "/travels/find", (req, res) => {
     console.log(Date() + " - GET /travels");
     Travel.find(req.query, (err, travels) => {

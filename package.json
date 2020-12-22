@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test heroku config:set NODE_MODULES_CACHE=false\" && exit 1"
   },
   "author": "José Enrique & Javier Ortiz",
   "license": "ISC",
