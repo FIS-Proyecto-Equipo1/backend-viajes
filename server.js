@@ -1,3 +1,7 @@
+//heroku container:push web -a urbanio-travels
+//heroku container:release web -a urbanio-travels
+
+
 var express = require('express');
 var bodyParser = require('body-parser');
 const Travel = require('./travels');
