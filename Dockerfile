@@ -8,6 +8,9 @@ COPY package-lock.json .
 RUN npm install
 
 COPY index.js .
+COPY db.js .
+COPY server.js .
+COPY travels.js .
 
 EXPOSE 4000
 
