@@ -1,18 +1,15 @@
 const mongoose = require('mongoose');
 
-const travelSchema = new mongoose.Schema({
-    id_cliente: Number,
-    id_vehiculo: Number,
-    estado: String,
-    duracion: Number
-});
+const valores_estado = ['EN CURSO', 'FINALIZADO']
+const format_duracion=new RegExp('[0-9]{3}[ ]{min}'); //TODO:FALLA
 
-// travelSchema.methods.cleanup = function() {
-//     return {id_cliente: this.id_cliente,
-//             id_vehiculo: this.id_vehiculo,
-//             estado: this.estado,
-//             duracion:this.duracion};
-// }
+
+const travelSchema = new mongoose.Schema({
+    id_cliente: {type:String, unique: true, required: true},
+    id_vehiculo: {type:String, unique: true, required: true}, //TODO: MATRICULA?
+    estado: {type: String, required: true, enum:valores_estado},
+    duracion: {type: String, required: true, match:format_duracion}
+});
 
 
 const Travel = mongoose.model('Travel', travelSchema);
