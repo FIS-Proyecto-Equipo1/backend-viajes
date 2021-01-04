@@ -1,7 +1,9 @@
 var DataStore = require('mongoose');
 var mongoose = require('mongoose');
 
-const DB_URL = ('mongodb+srv://admin:admin@cluster0.upzcp.mongodb.net/test' || 'mongodb://mongo/test');
+const DB_URL = (process.env.MONGO_URL || 'mongodb://mongo/test');
+
+//mongodb+srv://admin:admin@cluster0.upzcp.mongodb.net/test
 
 const dbConnect = function() {
     const db = mongoose.connection;
