@@ -8,6 +8,7 @@ services:
 before_install:
   - wget -qO- https://toolbelt.heroku.com/install.sh | sh
 install:
+  - npm test
   - npm install
 script:
   - docker build -t backendviajes .
