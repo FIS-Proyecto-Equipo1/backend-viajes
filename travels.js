@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const valores_estado = ['EN CURSO', 'FINALIZADO']
-const format_duracion=new RegExp('[0-9]{3}[ ]{min}'); //TODO:FALLA
+const format_duracion=new RegExp('[0-9]{3}[ ]{1}[min]{1}'); //TODO: NO FUNCIONA, CAMBIAR
 
 
 const travelSchema = new mongoose.Schema({
