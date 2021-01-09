@@ -14,6 +14,7 @@ app.get("/", (req, res) => {
 });
 
 
+
 // POST crear viaje
 app.post(BASE_API_PATH + "/travels", (req, res) => {
     console.log(Date() + " - POST /travels");
