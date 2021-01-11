@@ -1,0 +1,138 @@
+swagger: "2.0"
+info:
+  description: "descripción"
+  version: "1.0.0"
+  title: "Urbanio"
+  termsOfService: "http://swagger.io/terms/"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "petstore.swagger.io"
+basePath: "/api/v1"
+tags:
+
+- name: "Viajes"
+  description: "Microservicio de viajes"
+schemes:
+- "https"
+- "http"
+
+
+paths:
+  /travels:
+    post:
+      tags:
+      - "Viajes"
+      summary: "Añade un nuevo viaje a la lista de viajes en curso"
+      description: ""
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/travel"
+      responses:
+        "400":
+          description: "Bad Request"
+        "201":
+          description: "Created"
+  /travels/find:
+    get:
+      tags:
+      - "Viajes"
+      summary: "Muestra el listado de viajes con la posibilidad de establecer filtros"
+      description: "Se utilizará filtros por id_cliente y por estado del viaje"
+      operationId: "findTravelbyStatus"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_cliente"
+        in: "query"
+        type: "string"
+      - name: "estado"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "finalizado"
+          - "en curso"
+          default: "en curso"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/travel"
+        "400":
+          description: "Invalid status value"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /travels/{_id}:
+    patch:
+      tags:
+      - "Viajes"
+      summary: "Actualiza el estado de un viaje"
+      description: " "
+      operationId: "findPetsByTags"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "_id"
+        in: "path"
+        description: "Identificador de viaje asignado automáticamente por la base de datos."
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/travel"
+        "400":
+          description: "Bad Request"
+      
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+
+definitions:
+  travel:
+    type: "object"
+    properties:
+      _id:
+        type: "string"
+      id_cliente:
+        type: "string"
+      id_vehiculo:
+        type: "string"
+      estado:
+        type: "string"
+        enum:
+        - "Finalizado"
+        - "En Curso"
+      duración:
+        type: "string"
+        format: "date time"
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
