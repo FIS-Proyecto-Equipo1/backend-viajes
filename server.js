@@ -33,6 +33,8 @@ app.post(BASE_API_PATH + "/travels", (req, res) => {
 
 // GET todos los viajes
 app.get(BASE_API_PATH + "/travels", (req, res) => {
+    idCliente = req.header('x-user');
+    console.log(`user: ${idCliente}`);
     console.log(Date() + " - GET /travels");
     Travel.find({}, (err, travels) => {
         if (err) {
@@ -48,6 +50,8 @@ app.get(BASE_API_PATH + "/travels", (req, res) => {
 
 // Busqueda de viajes a través de una variable ej /travels/find?CLAVE=VALOR
 app.get(BASE_API_PATH + "/travels/find", (req, res) => {
+    idCliente = req.header('x-user');
+    console.log(`user: ${idCliente}`);
     console.log(Date() + " - GET /travels");
     Travel.find(req.query, (err, travels) => {
         if (err) {
