@@ -18,13 +18,15 @@ app.get("/", (req, res) => {
 
 // POST crear viaje
 app.post(BASE_API_PATH + "/travels", (req, res) => {
+    idCliente = req.header('x-user');
     console.log(Date() + " - POST /travels");
     var travel = req.body;
     Travel.create(travel, (err) => {
         if (err) {
             console.log(Date() + " - " + err);
             res.sendStatus(500);
-        } else {
+        } 
+        else {
             res.sendStatus(201);
         }
     });
@@ -40,7 +42,8 @@ app.get(BASE_API_PATH + "/travels", (req, res) => {
         if (err) {
             console.log(Date() + "-" + err);
             res.sendStatus(500);
-        } else{
+        } 
+        else{
             console.log(req.query);
             res.send(travels)
         }
@@ -57,7 +60,8 @@ app.get(BASE_API_PATH + "/travels/find", (req, res) => {
         if (err) {
             console.log(Date() + "-" + err);
             res.sendStatus(500);
-        } else{
+        } 
+        else{
             console.log(req.query);
             res.send(travels)
         }
@@ -68,29 +72,36 @@ app.get(BASE_API_PATH + "/travels/find", (req, res) => {
 //PATCH modificar estado viaje ej /travels/1234567
 app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
     try{
+        idCliente = req.header('x-user');
         console.log(Date() + " - PATCH /travels");
         const updatedPost = await Travel.updateOne(
-        {_id: req.params.id},
-        {$set: {estado: req.body.estado}});
+            {_id: req.params.id},
+            {$set: {
+                estado: req.body.estado,
+                duracion: req.body.duracion
+            }});
         res.json(updatedPost)
-    }catch(err){
+    }
+    catch(err){
         console.log(Date() + "-" + err);
         res.sendStatus(500);
-        }
+    }
 });
 
 //DELETE viaje por ID ej /travels/1234567
 app.delete(BASE_API_PATH+'/travels/:id', async (req, res) => {
     try{
+        idCliente = req.header('x-user');
         console.log(Date() + " - DELETE /travels");
         const updatedPost = await Travel.deleteOne(
-        {_id: req.params.id},
-        {$set: {estado: req.body.estado}});
+            {_id: req.params.id},
+            {$set: {estado: req.body.estado}});
         res.sendStatus(200);
-    }catch(err){
+    }
+    catch(err){
         console.log(Date() + "-" + err);
         res.sendStatus(500);
-        }
+    }
 });
 
 // // GET viajes por ID
