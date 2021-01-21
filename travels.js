@@ -8,7 +8,7 @@ const travelSchema = new mongoose.Schema({
     id_cliente: {type:String, unique: true, required: true},
     id_vehiculo: {type:String, unique: true, required: true}, //TODO: MATRICULA?
     estado: {type: String, required: true, enum:valores_estado},
-    duracion: {type: String, required: true, match:format_duracion}
+    duracion: {type: String, required: true}
 });
 
 
