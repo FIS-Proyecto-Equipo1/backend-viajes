@@ -19,6 +19,9 @@
     "heroku": "^7.47.5",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.8",
-    "nedb": "^1.8.0"
+    "nedb": "^1.8.0",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.9",
+    "url-join": "^4.0.1"
   }
 }

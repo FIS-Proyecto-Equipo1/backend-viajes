@@ -5,12 +5,12 @@ const valores_estado = ['EN CURSO', 'FINALIZADO']
 
 
 const travelSchema = new mongoose.Schema({
-    id_cliente: {type:String, unique: true, required: true},
-    id_vehiculo: {type:String, unique: true, required: true}, //TODO: MATRICULA?
+    id_cliente: {type:String, required: true},
+    id_vehiculo: {type:String, unique: false, required: true}, //TODO: MATRICULA?
     estado: {type: String, required: true, enum:valores_estado},
     duracion: {type: String, required: true}
 });
-
+//match:format_duracion
 
 const Travel = mongoose.model('Travel', travelSchema);
 
