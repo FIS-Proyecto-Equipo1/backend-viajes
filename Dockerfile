@@ -9,9 +9,10 @@ RUN npm install
 
 COPY index.js .
 COPY db.js .
+COPY vehiculosResource.js .
 COPY server.js .
 COPY travels.js .
-COPY vehiculosResource.js .
+
 
 EXPOSE 4000
 
