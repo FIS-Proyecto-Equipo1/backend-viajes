@@ -67,4 +67,4 @@ describe("POST /vehicles", () => {
             expect(response.statusCode).toBe(500);
        });
     });
-});
+});a
