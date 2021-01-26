@@ -5,7 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 const Travel = require('./travels');
-const VehiculosResource = require('./vehiculosResource');
+const VehiculosResource = require('./vehiculosResource.js');
 
 var BASE_API_PATH = "/api/v1";
 var app = express();
