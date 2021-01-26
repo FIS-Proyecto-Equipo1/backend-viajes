@@ -11,7 +11,7 @@ COPY index.js .
 COPY db.js .
 COPY server.js .
 COPY travels.js .
-vehiculosResource.js .
+COPY vehiculosResource.js .
 
 EXPOSE 4000
 
