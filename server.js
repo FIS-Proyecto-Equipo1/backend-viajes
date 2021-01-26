@@ -5,6 +5,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 const Travel = require('./travels');
+const VehiculosResource = require('./vehiculosResource');
 
 var BASE_API_PATH = "/api/v1";
 var app = express();
@@ -81,6 +82,15 @@ app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
                 duracion: req.body.duracion
             }});
         res.json(updatedPost)
+
+        VehiculosResource.patchVehicle(req.body.id_vehiculo, VehiculosResource.STATUS_DISPONIBLE)
+        .then(() => {
+            res.sendStatus(201);
+        })
+        .catch((error) => {
+            console.log("error :" + error);
+            return res.sendStatus(500);
+        })
     }
     catch(err){
         console.log(Date() + "-" + err);
