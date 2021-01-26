@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 const Travel = require('./travels');
 const VehiculosResource = require('./vehiculosResource');
+const FacturasResource = require('./facturasResource.js');
 
 
 var BASE_API_PATH = "/api/v1";
@@ -75,6 +76,7 @@ app.get(BASE_API_PATH + "/travels/find", (req, res) => {
 app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
     try{
         idCliente = req.header('x-user');
+
         console.log(Date() + " - PATCH /travels");
         const updatedPost = await Travel.updateOne(
             {_id: req.params.id},
@@ -82,20 +84,29 @@ app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
                 estado: req.body.estado,
                 duracion: req.body.duracion
             }});
-        res.json(updatedPost)
-
+        res.json(updatedPost);
+        //patch a vehiculos estado:trayecto->disponible
         VehiculosResource.patchVehicle(req.body.id_vehiculo, VehiculosResource.STATUS_DISPONIBLE)
         .then(() => {
-            res.sendStatus(201);
+            //res.sendStatus(201);
+            console.log("OK VEHICULOS " + req.body.id_vehiculo + " " + req.body.id_cliente + " " + req.body.duracion);
         })
         .catch((error) => {
-            console.log("error :" + error);
-            return res.sendStatus(500);
+            console.log("error llamada api vehiculos: " + error);
+        });
+        //post a facturas
+        FacturasResource.postBills(req.body.id_cliente, req.body.id_vehiculo, req.body.duracion)
+        .then(() => {
+            //res.sendStatus(201);
+            console.log("OK FACTURAS");
         })
+        .catch((error) => {
+            console.log("error llamada api facturas: " + error);
+        });
     }
     catch(err){
         console.log(Date() + "-" + err);
-        res.sendStatus(500);
+        //res.sendStatus(500);
     }
 });
 
