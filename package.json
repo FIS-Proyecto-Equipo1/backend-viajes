@@ -14,11 +14,13 @@
   "author": "José Enrique & Javier Ortiz",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "heroku": "^7.47.11",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.8",
-    "nedb": "^1.8.0"
+    "nedb": "^1.8.0",
+    "url-join": "^4.0.1"
   },
   "devDependencies": {
     "jest": "^26.6.3",
