@@ -1,18 +1,18 @@
 swagger: "2.0"
 info:
-  description: "descripción"
+  description: "Definición del microservicio de viajes"
   version: "1.0.0"
-  title: "Urbanio"
+  title: "Urbanio: Servicio Viajes"
   termsOfService: "http://swagger.io/terms/"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
+host: "microservice-travel.herokuapp.com"
 basePath: "/api/v1"
 tags:
 
 - name: "Viajes"
-  description: "Microservicio de viajes"
+  description: "gestión del transcurso de viajes"
 schemes:
 - "https"
 - "http"
@@ -25,7 +25,7 @@ paths:
       - "Viajes"
       summary: "Añade un nuevo viaje a la lista de viajes en curso"
       description: ""
-      operationId: "addPet"
+      operationId: "createViaje"
       consumes:
       - "application/json"
       produces:
@@ -41,12 +41,32 @@ paths:
           description: "Bad Request"
         "201":
           description: "Created"
+    get:
+      tags:
+      - "Viajes"
+      summary: "Recibimos todos los viajes"
+      description: ""
+      operationId: "getAllViajes"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "x-user"
+        required: true
+        type: string
+      responses:
+        "400":
+          description: "Bad Request"
+        "200":
+          description: "successful operation"
   /travels/find:
     get:
       tags:
       - "Viajes"
       summary: "Muestra el listado de viajes con la posibilidad de establecer filtros"
-      description: "Se utilizará filtros por id_cliente y por estado del viaje"
+      description: "Se utilizará filtros por id_cliente (el id_cliente ejemplo es 5ffaf5695dc3ce0fa81f16b2) y por estado del viaje"
       operationId: "findTravelbyStatus"
       produces:
       - "application/json"
@@ -54,6 +74,9 @@ paths:
       - name: "id_cliente"
         in: "query"
         type: "string"
+        items:
+          type: string
+          default: "5ffaf5695dc3ce0fa81f16b2"
       - name: "estado"
         in: "query"
         description: "Status values that need to be considered for filter"
@@ -61,9 +84,9 @@ paths:
         items:
           type: "string"
           enum:
-          - "finalizado"
-          - "en curso"
-          default: "en curso"
+          - "FINALIZADO"
+          - "EN CURSO"
+          default: "EN CURSO"
         collectionFormat: "multi"
       responses:
         "200":
@@ -74,17 +97,14 @@ paths:
               $ref: "#/definitions/travel"
         "400":
           description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+
   /travels/{_id}:
     patch:
       tags:
       - "Viajes"
       summary: "Actualiza el estado de un viaje"
-      description: " "
-      operationId: "findPetsByTags"
+      description: ""
+      operationId: "patchViaje"
       consumes:
       - "application/json"
       produces:
@@ -92,9 +112,37 @@ paths:
       parameters:
       - name: "_id"
         in: "path"
-        description: "Identificador de viaje asignado automáticamente por la base de datos."
+        description: "Identificador de viaje asignado automáticamente por la base de datos. Obtenerlo de alguna llamada get"
         required: true
         type: "string"
+        default: "6010bf32641cdf000f3b1a36"
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/travel"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/travel"
+        "400":
+          description: "Bad Request"
+    delete:
+      tags:
+      - "Viajes"
+      summary: "Eliminación de un viaje por parte del administrador"
+      description: ""
+      operationId: "deleteViaje"
+      parameters:
+      - name: "_id"
+        in: "path"
+        description: "Identificador de viaje asignado automáticamente por la base de datos. Obtenerlo de alguna llamada get"
+        required: true
+        type: "string"
+        default: "6010bf32641cdf000f3b1a36"
       responses:
         "200":
           description: "Successful operation"
@@ -105,14 +153,7 @@ paths:
         "400":
           description: "Bad Request"
       
-securityDefinitions:
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
+      
 
 definitions:
   travel:
@@ -122,13 +163,14 @@ definitions:
         type: "string"
       id_cliente:
         type: "string"
+        default: "5ffaf5695dc3ce0fa81f16b2"
       id_vehiculo:
         type: "string"
       estado:
         type: "string"
         enum:
-        - "Finalizado"
-        - "En Curso"
+        - "FINALIZADO"
+        - "EN CURSO"
       duración:
         type: "string"
         format: "date time"
