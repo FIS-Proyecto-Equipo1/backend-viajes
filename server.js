@@ -39,18 +39,35 @@ app.post(BASE_API_PATH + "/travels", (req, res) => {
 // GET todos los viajes
 app.get(BASE_API_PATH + "/travels", (req, res) => {
     idCliente = req.header('x-user');
+    rolCliente = req.header('rol');
     console.log(`user: ${idCliente}`);
+    console.log(`rol: ${rolCliente}`);
     console.log(Date() + " - GET /travels");
-    Travel.find({}, (err, travels) => {
-        if (err) {
-            console.log(Date() + "-" + err);
-            res.sendStatus(500);
-        } 
-        else{
-            console.log(req.query);
-            res.send(travels)
+    if (idCliente) {
+
+        if (rolCliente !== 'ADMIN') {
+            console.log(Date()+" - No tiene privilegios para ver todos los viajes");
+            res.status(403).send()
         }
-    });
+        
+        else {   
+            Travel.find({}, (err, travels) => {
+                if (err) {
+                    console.log(Date() + "-" + err);
+                    res.sendStatus(500);
+                } 
+                else{
+                    console.log(req.query);
+                    res.send(travels)
+                }
+            });
+        }
+    }
+    else {
+        console.log(Date()+" - No es una llamada autenticada por el api gateway");
+        res.status(400).send()
+    }
+
 });
 
 
