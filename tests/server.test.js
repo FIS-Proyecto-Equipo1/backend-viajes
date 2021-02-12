@@ -54,21 +54,35 @@ describe("Travels API", () => {
         it("should return one travel", () => {
             return request(app).get('/api/v1/travels/find?id_cliente='+travelOK.id_cliente).then((response) => {
                 expect(response.statusCode).toBe(200);
-                //expect(String(response.body)).toMatch(String(travelOK)); FALLA
-                //expect(dbFindOne).toBeCalledWith({"id_cliente":travelOK.id_cliente}, expect.any(Function)); FALLA
+                expect(dbFindOne).toBeCalledWith({"id_cliente":travelOK.id_cliente}, expect.any(Function));
             });
         })
 
-    //     it("should not return any travel", () => {
-    //         dbFindOne.mockImplementation((filter, callback) => {
-    //             callback(null, null);
-    //         })
-    //         return request(app).get('/api/v1/travels/find/00000000').then((response) => {
-    //             expect(response.statusCode).toBe(404);
-    //             expect(dbFindOne).toBeCalledWith({"_id":"00000000"}, expect.any(Function));
-    //         });
-    //     })
-    // });
+        it("should return one travel", () => {
+            return request(app).get('/api/v1/travels/find?id_vehiculo='+travelOK.id_vehiculo).then((response) => {
+                expect(response.statusCode).toBe(200);
+                expect(dbFindOne).toBeCalledWith({"id_vehiculo":travelOK.id_vehiculo}, expect.any(Function)); 
+            });
+        })
+
+        it("should return one travel", () => {
+            return request(app).get('/api/v1/travels/find?estado='+travelOK.estado).then((response) => {
+                expect(response.statusCode).toBe(200);
+                expect(dbFindOne).toBeCalledWith({"estado":travelOK.estado}, expect.any(Function)); 
+            });
+        })
+
+
+        it("should not return any travel", () => {
+            dbFindOne.mockImplementation((filter, callback) => {
+                callback(null, null);
+            })
+            return request(app).get('/api/v1/travels/find?id=00000000').then((response) => {
+                expect(response.statusCode).toBe(404);
+                expect(dbFindOne).toBeCalledWith({"id":"00000000"}, expect.any(Function));
+            });
+        })
+    });
 
     describe("POST /travels", () => {
         const travel = {"_id":"6010a090523dc838601265bf","id_cliente":"1","id_vehiculo":"6743TRQ","estado":"FINALIZADO","duracion":"00:00:03.493","__v":0}
@@ -120,7 +134,7 @@ describe("Travels API", () => {
             
             travelOK = travels[0];
 
-            dbDelete = jest.spyOn(Travel, "findOneAndDelete");
+            dbDelete = jest.spyOn(Travel, "deleteOne");
             dbDelete.mockImplementation(({}, callback) => {
                 callback(null, travelOK);
             });
@@ -134,8 +148,8 @@ describe("Travels API", () => {
 
         // it('should delete  one travel', ()=>{
         //     return request(app).delete('/api/v1/travels/'+travelOK._id).set({rol:"ADMIN"}).then((response) => {
-        //         expect(response.statusCode).toBe(204);
-        //         //expect(dbDelete).toBeCalledWith({"matricula":travelOK._id}, expect.any(Function));
+        //         expect(response.statusCode).toBe(202);
+        //         expect(dbDelete).toBeCalledWith({"matricula":travelOK._id}, expect.any(Function));
         //    });
         // });
 
@@ -143,10 +157,9 @@ describe("Travels API", () => {
             dbDelete.mockImplementation(({}, callback) => {
                 callback(null, null);
             });
-            return request(app).delete('/api/v1/travels/5642KIL').set({rol:"ADMIN"}).then((response) => {
+            return request(app).delete('/api/v1/travels/'+travelOK._id).set({rol:"ADMIN"}).then((response) => {
                 expect(response.statusCode).toBe(500);
-                //expect(String(response.body)).toMatch(String({}));
-                //expect(dbDelete).toBeCalledWith({"matricula":"5642KIL"}, expect.any(Function));
+                expect(String(response.body)).toMatch(String({}));
            });
         });
     });
@@ -203,21 +216,20 @@ describe("Travels API", () => {
         
         // it('should modify some info and return one travel', ()=>{
         //     return request(app).patch('/api/v1/travels/'+travelOK._id).send(travelUp).then((response) => {
-        //         expect(response.statusCode).toBe(200);
+        //         expect(response.statusCode).toBe(201);
         //         //expect(String(response.body)).toMatch(String(travelOK.cleanId()));
         //         //expect(dbPatch).toBeCalledWith({"matricula":travelOK.matricula}, expect.any(Object), {"runValidators": true} ,expect.any(Function));
         //    });
         // });
 
-        // it('should not modify anything', ()=>{
-        //     dbPatch.mockImplementation((filter, update_travel, validators, callback) => {
-        //         callback(null, null);
-        //     });
-        //     return request(app).patch('/api/v1/travels/'+travelOK.matricula+"2").send(travelUp).then((response) => {
-        //         expect(response.statusCode).toBe(404);
-        //     });
+        it('should not modify anything', ()=>{
+            dbPatch.mockImplementation((filter, update_travel, validators, callback) => {
+                callback(null, null);
+            });
+            return request(app).patch('/api/v1/travels/'+travelOK.id_vehiculo).send(travelUp).then((response) => {
+                expect(response.statusCode).toBe(404);
+            });
         });
 
      });
-    
-});
+    });
