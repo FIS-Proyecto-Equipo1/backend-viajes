@@ -18,7 +18,7 @@ describe('Travel db connection', ()=>{
     });
 
     it('writes a travel in the DB', (done)=>{
-        const travel = new Travel({"id_cliente":"1","id_vehiculo":"6743TRQ","estado":"FINALIZADO","duracion":"00:00:03.493","__v":0})
+        const travel = new Travel({"id_cliente":"1","id_vehiculo":"6743TRQ","estado":"FINALIZADO","duracion":"00:00:03.493"})
         travel.save((err, travel) => {
             expect(err).toBeNull();
             Travel.find({}, (err, travels) => {
