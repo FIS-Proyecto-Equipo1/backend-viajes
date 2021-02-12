@@ -41,24 +41,23 @@ describe("Travels API", () => {
     //         dbFindOne.mockImplementation((filter, callback) => {
     //             callback(null, travelOK);
     //         });
-
     //     });
 
-    //     it("should return all travel", () => {
-    //         return request(app).get('/api/v1/travels').then((response) => {
-    //             expect(response.statusCode).toBe(200);
-    //             expect(response.body).toBeArrayOfSize(3);
-    //             expect(dbFind).toBeCalledWith({}, expect.any(Function));
-    //         });            
-    //     })
+        // it("should return all travel", () => {
+        //     return request(app).get('/api/v1/travels').then((response) => {
+        //         expect(response.statusCode).toBe(200);
+        //         expect(response.body).toBeArrayOfSize(3);
+        //         expect(dbFind).toBeCalledWith({}, expect.any(Function));
+        //     });            
+        // })
 
-    //     it("should return one travel", () => {
-    //         return request(app).get('/api/v1/travels/find?id_cliente='+travelOK.id_cliente).then((response) => {
-    //             expect(response.statusCode).toBe(200);
-    //             //expect(String(response.body)).toMatch(String(travelOK)); FALLA
-    //             //expect(dbFindOne).toBeCalledWith({"id_cliente":travelOK.id_cliente}, expect.any(Function)); FALLA
-    //         });
-    //     })
+        // it("should return one travel", () => {
+        //     return request(app).get('/api/v1/travels/find?id_cliente='+travelOK.id_cliente).then((response) => {
+        //         expect(response.statusCode).toBe(200);
+        //         //expect(String(response.body)).toMatch(String(travelOK)); FALLA
+        //         //expect(dbFindOne).toBeCalledWith({"id_cliente":travelOK.id_cliente}, expect.any(Function)); FALLA
+        //     });
+        // })
 
         // it("should not return any travel", () => {
         //     dbFindOne.mockImplementation((filter, callback) => {

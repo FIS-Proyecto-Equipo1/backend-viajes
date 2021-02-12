@@ -32,5 +32,6 @@ describe('Travel db connection', ()=>{
         mongoose.connection.db.DropDatabase(() => {
             mongoose.connection.close(done);
         })
+        
     })
 })
