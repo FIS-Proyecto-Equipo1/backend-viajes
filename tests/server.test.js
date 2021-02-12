@@ -222,14 +222,15 @@ describe("Travels API", () => {
         //    });
         // });
 
-        it('should not modify anything', ()=>{
+
+/*         it('should not modify anything', ()=>{
             dbPatch.mockImplementation((filter, update_travel, validators, callback) => {
                 callback(null, null);
             });
             return request(app).patch('/api/v1/travels/'+travelOK.id_vehiculo).send(travelUp).then((response) => {
                 expect(response.statusCode).toBe(404);
             });
-        });
+        }); */
 
      });
     });

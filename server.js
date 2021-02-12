@@ -23,16 +23,23 @@ app.get("/", (req, res) => {
 app.post(BASE_API_PATH + "/travels", (req, res) => {
     idCliente = req.header('x-user');
     console.log(Date() + " - POST /travels");
-    var travel = req.body;
-    Travel.create(travel, (err) => {
-        if (err) {
-            console.log(Date() + " - " + err);
-            res.sendStatus(500);
-        } 
-        else {
-            res.sendStatus(201);
-        }
-    });
+    if (idCliente) {
+        var travel = req.body;
+        Travel.create(travel, (err) => {
+            if (err) {
+                console.log(Date() + " - " + err);
+                res.sendStatus(500);
+            } 
+            else {
+                res.sendStatus(201);
+            }
+        });
+    }
+    else {
+        console.log(Date()+" - No es una llamada autenticada por el api gateway");
+        res.status(400).send()
+    }
+
 });
 
 
@@ -76,55 +83,69 @@ app.get(BASE_API_PATH + "/travels/find", (req, res) => {
     idCliente = req.header('x-user');
     console.log(`user: ${idCliente}`);
     console.log(Date() + " - GET /travels");
-    Travel.findOne(req.query, (err, travels) => {
-        if (err) {
-            console.log(Date() + "-" + err);
-            res.sendStatus(500);
-
-        }else if(travels == null){
-            res.sendStatus(404);
-        }
-        else{
-            console.log(req.query);
-            res.status(200).send(travels)
-        }
-    });
+    if (idCliente) {
+        Travel.findOne(req.query, (err, travels) => {
+            if (err) {
+                console.log(Date() + "-" + err);
+                res.sendStatus(500);
+    
+            }else if(travels == null){
+                res.sendStatus(404);
+            }
+            else{
+                console.log(req.query);
+                res.status(200).send(travels)
+            }
+        });
+    }
+    else {
+        console.log(Date()+" - No es una llamada autenticada por el api gateway");
+        res.status(400).send()
+    }
 });
 
 
 //PATCH modificar estado viaje ej /travels/1234567
 app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
     try{
+        console.log(Date() + " - PATCH /travels");
         idCliente = req.header('x-user');
 
-        console.log(Date() + " - PATCH /travels");
-        const updatedPost = await Travel.updateOne(
-            {_id: req.params.id},
-            {$set: {
-                estado: req.body.estado,
-                duracion: req.body.duracion
-            }});
-        res.json(updatedPost);
-        //patch a vehiculos estado:trayecto->disponible
-        VehiculosResource.patchVehicle(req.body.id_vehiculo, VehiculosResource.STATUS_DISPONIBLE)
-        .then(() => {
-            console.log("OK VEHICULOS " + req.body.id_vehiculo + " " + req.body.id_cliente + " " + req.body.duracion);
-            res.sendStatus(201);
-        })
-        .catch((error) => {
-            console.log("error llamada api vehiculos: " + error);
-            res.sendStatus(404);
-        });
-        //post a facturas
-        FacturasResource.postBills(req.body.id_cliente, req.body.id_vehiculo, req.body.duracion)
-        .then(() => {
-            console.log("OK FACTURAS");
-            res.sendStatus(201);
-        })
-        .catch((error) => {
-            console.log("error llamada api facturas: " + error);
-            res.sendStatus(404);
-        });
+        if (idCliente){
+            const updatedPost = await Travel.updateOne(
+                {_id: req.params.id},
+                {$set: {
+                    estado: req.body.estado,
+                    duracion: req.body.duracion
+                }});
+            res.json(updatedPost);
+
+            //patch a vehiculos estado:trayecto->disponible
+            VehiculosResource.patchVehicle(req.body.id_vehiculo, VehiculosResource.STATUS_DISPONIBLE)
+            .then(() => {
+                console.log("OK VEHICULOS " + req.body.id_vehiculo + " " + req.body.id_cliente + " " + req.body.duracion);
+                res.sendStatus(201);
+            })
+            .catch((error) => {
+                console.log("error llamada api vehiculos: " + error);
+                res.sendStatus(404);
+            });
+
+            //post a facturas
+            FacturasResource.postBills(req.body.id_cliente, req.body.id_vehiculo, req.body.duracion)
+            .then(() => {
+                console.log("OK FACTURAS");
+                res.sendStatus(201);
+            })
+            .catch((error) => {
+                console.log("error llamada api facturas: " + error);
+                res.sendStatus(404);
+            });
+        }
+        else {
+            console.log(Date()+" - No es una llamada autenticada por el api gateway");
+            res.status(400).send()
+        } 
     }
     catch(err){
         console.log(Date() + "-" + err);
@@ -136,11 +157,18 @@ app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
 app.delete(BASE_API_PATH+'/travels/:id', async (req, res) => {
     try{
         idCliente = req.header('x-user');
-        console.log(Date() + " - DELETE /travels");
-        const updatedPost = await Travel.deleteOne(
-            {_id: req.params.id},
-            {$set: {estado: req.body.estado}});
-        res.sendStatus(202);
+        if (idCliente) {
+            console.log(Date() + " - DELETE /travels");
+            const updatedPost = await Travel.deleteOne(
+                {_id: req.params.id},
+                {$set: {estado: req.body.estado}});
+            res.sendStatus(202);
+        }
+        else {
+            console.log(Date()+" - No es una llamada autenticada por el api gateway");
+            res.status(400).send()
+        }
+
     }
     catch(err){
         console.log(Date() + "-" + err);

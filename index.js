@@ -1,7 +1,7 @@
 const app = require('./server.js');
 const dbConnect = require('./db');
 
-var port = (process.env.PORT || 4000); //CAMBIADO PARA HEROKU
+var port = (process.env.PORT || 5000); //CAMBIADO PARA HEROKU
 
 console.log("Starting API server at "+port);
 
