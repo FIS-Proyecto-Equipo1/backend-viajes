@@ -1,7 +1,7 @@
 sudo: required
 languaje: node_js
 node_js:
-  - "9"
+  - "14"
 services:
   - docker
   - mongodb 
@@ -10,6 +10,7 @@ before_install:
 install:
   - npm install
 script:
+  - npm test --forceExit
   - docker build -t backendviajes .
 deploy:
   provider: script

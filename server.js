@@ -76,14 +76,17 @@ app.get(BASE_API_PATH + "/travels/find", (req, res) => {
     idCliente = req.header('x-user');
     console.log(`user: ${idCliente}`);
     console.log(Date() + " - GET /travels");
-    Travel.find(req.query, (err, travels) => {
+    Travel.findOne(req.query, (err, travels) => {
         if (err) {
             console.log(Date() + "-" + err);
             res.sendStatus(500);
-        } 
+
+        }else if(travels == null){
+            res.sendStatus(404);
+        }
         else{
             console.log(req.query);
-            res.send(travels)
+            res.status(200).send(travels)
         }
     });
 });
@@ -105,25 +108,27 @@ app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
         //patch a vehiculos estado:trayecto->disponible
         VehiculosResource.patchVehicle(req.body.id_vehiculo, VehiculosResource.STATUS_DISPONIBLE)
         .then(() => {
-            //res.sendStatus(201);
             console.log("OK VEHICULOS " + req.body.id_vehiculo + " " + req.body.id_cliente + " " + req.body.duracion);
+            res.sendStatus(201);
         })
         .catch((error) => {
             console.log("error llamada api vehiculos: " + error);
+            res.sendStatus(404);
         });
         //post a facturas
         FacturasResource.postBills(req.body.id_cliente, req.body.id_vehiculo, req.body.duracion)
         .then(() => {
-            //res.sendStatus(201);
             console.log("OK FACTURAS");
+            res.sendStatus(201);
         })
         .catch((error) => {
             console.log("error llamada api facturas: " + error);
+            res.sendStatus(404);
         });
     }
     catch(err){
         console.log(Date() + "-" + err);
-        //res.sendStatus(500);
+        res.sendStatus(500);
     }
 });
 
@@ -135,7 +140,7 @@ app.delete(BASE_API_PATH+'/travels/:id', async (req, res) => {
         const updatedPost = await Travel.deleteOne(
             {_id: req.params.id},
             {$set: {estado: req.body.estado}});
-        res.sendStatus(200);
+        res.sendStatus(202);
     }
     catch(err){
         console.log(Date() + "-" + err);
