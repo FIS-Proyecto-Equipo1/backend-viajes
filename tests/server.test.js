@@ -44,7 +44,7 @@ describe("Travels API", () => {
         });
 
         it("should return all travel", () => {
-            return request(app).get('/api/v1/travels').then((response) => {
+            return request(app).get('/api/v1/travels').set({rol:"ADMIN"}).then((response) => {
                 expect(response.statusCode).toBe(200);
                 expect(response.body).toBeArrayOfSize(3);
                 expect(dbFind).toBeCalledWith({}, expect.any(Function));
