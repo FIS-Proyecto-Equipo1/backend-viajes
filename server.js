@@ -88,10 +88,14 @@ app.get(BASE_API_PATH + "/travels/find", (req, res) => {
             if (err) {
                 console.log(Date() + "-" + err);
                 res.sendStatus(500);
-    
-            }else{
+            }
+            if(res == null){
+                console.log("Travel not found");
+                res.sendStatus(404);
+            }
+            else{
                 console.log(req.query);
-                res.status(200).send(travels)
+                res.status(200).send(travels);
             }
         });
 /*     }
