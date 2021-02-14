@@ -58,7 +58,7 @@ app.get(BASE_API_PATH + "/travels", (req, res) => {
         }
         
         else {   
-            Travel.find(req.query, (err, travels) => {
+            Travel.find({}, (err, travels) => {
                 if (err) {
                     console.log(Date() + "-" + err);
                     res.sendStatus(500);
@@ -182,7 +182,7 @@ app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
 app.delete(BASE_API_PATH + "/travels/:id", (req, res) => {
     let travel_id = req.params.id;
 
-    Travel.deleteOne({ "_id": travel_id }, (err, travel) => {
+    Travel.findOneAndDelete({ "_id": travel_id }, (err, travel) => {
         if (err == null && travel_id == null) {
             var auxErr = new Error("Travel not found " + travel_id);
             console.log(Date() + " - " + auxErr);
