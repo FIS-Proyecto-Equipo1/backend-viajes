@@ -58,7 +58,7 @@ app.get(BASE_API_PATH + "/travels", (req, res) => {
         }
         
         else {   
-            Travel.find({}, (err, travels) => {
+            Travel.find(req.query, (err, travels) => {
                 if (err) {
                     console.log(Date() + "-" + err);
                     res.sendStatus(500);
