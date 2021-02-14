@@ -153,27 +153,48 @@ app.patch(BASE_API_PATH+'/travels/:id', async (req, res) => {
     }
 });
 
-//DELETE viaje por ID ej /travels/1234567
-app.delete(BASE_API_PATH+'/travels/:id', async (req, res) => {
-    try{
-        idCliente = req.header('x-user');
-        //if (idCliente) {
-            console.log(Date() + " - DELETE /travels");
-            const updatedPost = await Travel.deleteOne(
-                {_id: req.params.id},
-                {$set: {estado: req.body.estado}});
-            res.sendStatus(202);
-/*         }
-        else {
-            console.log(Date()+" - No es una llamada autenticada por el api gateway");
-            res.status(400).send()
-        } */
+// //DELETE viaje por ID ej /travels/1234567 ORIGINAL
+// app.delete(BASE_API_PATH+'/travels/:id', async (req, res) => {
+//     try{
+//         idCliente = req.header('x-user');
+//         //if (idCliente) {
+//             console.log(Date() + " - DELETE /travels");
+//             const updatedPost = await Travel.deleteOne(
+//                 {_id: req.params.id},
+//                 {$set: {estado: req.body.estado}});
+//             res.sendStatus(202);
+// /*         }
+//         else {
+//             console.log(Date()+" - No es una llamada autenticada por el api gateway");
+//             res.status(400).send()
+//         } */
 
-    }
-    catch(err){
-        console.log(Date() + "-" + err);
-        res.sendStatus(500);
-    }
+//     }
+//     catch(err){
+//         console.log(Date() + "-" + err);
+//         res.sendStatus(500);
+//     }
+// });
+
+
+// DELETE SIN ASYNC
+app.delete(BASE_API_PATH + "/travels/:id", (req, res) => {
+    let travel_id = req.params.id;
+
+    Travel.deleteOne({ "_id": travel_id }, (err, travel) => {
+        if (err == null && travel_id == null) {
+            var auxErr = new Error("Travel not found " + travel_id);
+            console.log(Date() + " - " + auxErr);
+            res.sendStatus(404)
+        }
+        else if (err) {
+            console.log(err);
+            res.sendStatus(500)
+        } else {
+            console.log(Date() + " DELETE /travels/" + travel_id)
+            res.status(204).send({ message: "Travel " + travel_id + " deleted" });
+        }
+    });
 });
 
 // // GET viajes por ID
