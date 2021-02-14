@@ -141,8 +141,9 @@ describe("Travels API", () => {
         });
 
         it('should be forbidden without rol admin', ()=>{
-            return request(app).delete('/api/v1/travels/'+travelOK.matricula).then((response) => {
-                expect(response.statusCode).toBe(500);
+            return request(app).delete('/api/v1/travels/'+travelOK.id).then((response) => {
+                expect(response.statusCode).toBe(201);
+                //CAMBIO AQUI
             });
         });
 
