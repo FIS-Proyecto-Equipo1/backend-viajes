@@ -198,18 +198,5 @@ app.delete(BASE_API_PATH + "/travels/:id", (req, res) => {
     });
 });
 
-// // GET viajes por ID
-// app.get(BASE_API_PATH + "/travels/:id", (req, res) => {
-//     console.log(Date() + " - GET /travels");
-//     Travel.findById(req.params.id, (err, travels) => {
-//         if (err) {
-//             console.log(Date() + "-" + err);
-//             res.sendStatus(500);
-//         } else {
-//             res.send(travels)
-//         }
-//     });
-// });
-
 
 module.exports = app;
